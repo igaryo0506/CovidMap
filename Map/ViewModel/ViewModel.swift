@@ -12,12 +12,20 @@ import MapKit
 
 
 class ViewModel:ObservableObject {
-    let constData = 2000
+    static let constData = 2000
     private let dateFormatter: DateFormatter
     private var cancellables: Set<AnyCancellable> = []
 
     @Published var date: Date = Date()
-    @Published var cityData: [String: City] = Const.defaultCities
+
+    @Published var shouldUpdateMap: Void = ()
+
+    @Published var cityData: [CityName: City] = [
+        .saitama: City(name: .saitama, lat: 35.85694, lng: 139.64889),
+        .tokyo: City(name: .tokyo, lat: 35.68944, lng: 139.69167),
+        .kanagawa: City(name: .kanagawa, lat: 35.44778, lng: 139.6425)
+    ]
+
     
     init() {
         dateFormatter = DateFormatter()
@@ -30,7 +38,7 @@ class ViewModel:ObservableObject {
         // Published<Date>
         _date.projectedValue
             .eraseToAnyPublisher()
-            .debounce(for: 0.2, scheduler: DispatchQueue.main)
+            .debounce(for: 0.1, scheduler: DispatchQueue.main)
             .sink { [weak self] date in
                 // dateが変更されるたびに呼ばれる
                 self?.getJsonData()
@@ -54,24 +62,27 @@ class ViewModel:ObservableObject {
                 case .failure(let error):
                     print(error)
                 case .finished:
-                    break
+                    self.shouldUpdateMap = ()
                 }
-            } receiveValue: { covidData in
+            } receiveValue: { [weak self] covidData in
+                guard let self = self else {
+                    return
+                }
                 if covidData.itemList.count == 0 {
                     let cities = self.cityData
                     for city in cities {
                         self.cityData[city.key]?.amount = 0
                     }
                 }
-                for data in covidData.itemList{
+                for data in covidData.itemList {
                     self.cityData[data.name_jp]?.amount = Int(data.npatients) ?? 0
                 }
             }
             .store(in: &cancellables)
     }
     
-    func myFormatter(date:Date) -> String {
-        return dateFormatter.string(from: date) as String
+    func myFormatter(date: Date) -> String {
+        return dateFormatter.string(from: date)
     }
 }
 

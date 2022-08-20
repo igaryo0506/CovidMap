@@ -8,6 +8,7 @@
 import SwiftUI
 import MapKit
 
+
 struct MyMap: View {
 
     @EnvironmentObject var viewModel: ViewModel
@@ -20,12 +21,11 @@ struct MyMap: View {
     var body: some View {
         Map(coordinateRegion: $region, annotationItems: Array(viewModel.cityData.values)) { city in
             MapAnnotation(coordinate: city.coordinate) {
-                Circle()
-                    .foregroundColor(.red.opacity(0.5))
-                    .frame(
-                        width:
-                            CGFloat(sqrt(Float(city.amount) / Float(viewModel.constData) * 20 / Float(region.span.longitudeDelta))),
-                        height: CGFloat(sqrt(Float(city.amount) / Float(viewModel.constData) * 20 / Float(region.span.latitudeDelta))))
+                // Binding<City?> → Binding<City>?
+                CityCell(
+                    city: Binding($viewModel.cityData[city.name])!,
+                    region: $region
+                )
             }
         }
         .ignoresSafeArea()

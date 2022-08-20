@@ -6,8 +6,18 @@
 //
 
 import Foundation
+
+
 struct Item: Codable, Hashable{
-    var date:String
-    var name_jp:String
-    var npatients:String
+    var date: String
+    var name_jp: CityName
+    var npatients: String
 }
+
+/*
+ {
+    date: "2022/02/03",
+    name_jp: "東京", ←SingleValueContainer
+    npatients: "1000"
+ }
+ */
