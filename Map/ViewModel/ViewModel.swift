@@ -29,6 +29,7 @@ class ViewModel:ObservableObject {
 
         // Published<Date>
         _date.projectedValue
+            .debounce(for: 0.2, scheduler: DispatchQueue.main)
             .sink { [weak self] date in
                 // dateが変更されるたびに呼ばれる
                 self?.getJsonData()
