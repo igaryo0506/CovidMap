@@ -29,6 +29,7 @@ class ViewModel:ObservableObject {
 
         // Published<Date>
         _date.projectedValue
+            .eraseToAnyPublisher()
             .debounce(for: 0.2, scheduler: DispatchQueue.main)
             .sink { [weak self] date in
                 // dateが変更されるたびに呼ばれる
@@ -41,34 +42,32 @@ class ViewModel:ObservableObject {
         print("request sended")
         let strUrl: String = "https://opendata.corona.go.jp/api/Covid19JapanAll?date=" + myFormatter(date: date)
         let url: URL = URL(string:strUrl)!
-        URLSession.shared.dataTask(with: url) {(data, response, error) in
-            guard let data = data, error == nil else {
-                print(error?.localizedDescription as Any)
-                return
-            }
-            print("json got")
-            let decoder = JSONDecoder()
-            do {
-                let covidData = try decoder.decode(CovidData.self,from: data)
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else {
-                        return
-                    }
-                    if covidData.itemList.count == 0 {
-                        let cities = self.cityData
-                        for city in cities {
-                            self.cityData[city.key]?.amount = 0
-                        }
-                    }
-                    for data in covidData.itemList{
-                        self.cityData[data.name_jp]?.amount = Int(data.npatients) ?? 0
+
+        let decoder = JSONDecoder()
+        URLSession.shared
+            .dataTaskPublisher(for: url)
+            .map(\.data)
+            .decode(type: CovidData.self, decoder: decoder)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                case .finished:
+                    break
+                }
+            } receiveValue: { covidData in
+                if covidData.itemList.count == 0 {
+                    let cities = self.cityData
+                    for city in cities {
+                        self.cityData[city.key]?.amount = 0
                     }
                 }
-            } catch let parseError {
-                print("JSON Error \(parseError.localizedDescription)")
+                for data in covidData.itemList{
+                    self.cityData[data.name_jp]?.amount = Int(data.npatients) ?? 0
+                }
             }
-        }
-        .resume()
+            .store(in: &cancellables)
     }
     
     func myFormatter(date:Date) -> String {
