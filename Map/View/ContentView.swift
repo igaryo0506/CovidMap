@@ -9,19 +9,20 @@ import SwiftUI
 import MapKit
 
 struct ContentView: View {
-    @ObservedObject var viewModel = ViewModel()
-    @State var date = Date()
-    
+
+    let viewModel: ViewModel
+
     var body: some View {
         VStack{
-            MyMap(viewModel: viewModel)
-            MyDatePicker(viewModel: viewModel)
+            MyMap()
+            MyDatePicker()
         }
+        .environmentObject(viewModel)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(viewModel: ViewModel())
     }
 }

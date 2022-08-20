@@ -8,21 +8,19 @@
 import SwiftUI
 
 struct MyDatePicker: View {
-    @ObservedObject var viewModel:ViewModel
-    @State var date = Date()
+    @EnvironmentObject var viewModel: ViewModel
+
     var body: some View {
-        DatePicker("Select Date",selection: $date,displayedComponents: .date)
+        DatePicker("Select Date", selection: $viewModel.date, displayedComponents: .date)
             .datePickerStyle(WheelDatePickerStyle())
-            .padding()
-            .onChange(of: date){ date in
-                viewModel.getJsonData(date: date)
-            }
+            .padding()            
             .labelsHidden()
     }
 }
 
 struct MyDatePicker_Previews: PreviewProvider {
     static var previews: some View {
-        MyDatePicker(viewModel: ViewModel())
+        MyDatePicker()
+            .environmentObject(ViewModel())
     }
 }

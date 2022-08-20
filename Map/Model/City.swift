@@ -9,7 +9,9 @@ import Foundation
 import CoreLocation
 
 struct City: Identifiable {
-    let id = UUID()
+    var id: String {
+        name
+    }
     let name: String
     let coordinate: CLLocationCoordinate2D
     var amount:Int = 0

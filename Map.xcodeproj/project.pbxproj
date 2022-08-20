@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D328137E28B1118C0026ED54 /* Const.swift in Sources */ = {isa = PBXBuildFile; fileRef = D328137D28B1118C0026ED54 /* Const.swift */; };
 		DD030F8C28AF45AE0058029B /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD030F8B28AF45AE0058029B /* City.swift */; };
 		DD030F9228AFBF7E0058029B /* MyMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD030F9128AFBF7E0058029B /* MyMap.swift */; };
 		DD030F9428AFD3130058029B /* MyDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD030F9328AFD3130058029B /* MyDatePicker.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D328137D28B1118C0026ED54 /* Const.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Const.swift; sourceTree = "<group>"; };
 		DD030F8B28AF45AE0058029B /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
 		DD030F9128AFBF7E0058029B /* MyMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMap.swift; sourceTree = "<group>"; };
 		DD030F9328AFD3130058029B /* MyDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDatePicker.swift; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 				DD3B77FB28A9029D00F272F7 /* Model */,
 				DD4D94A428A8771D0082D5C4 /* Assets.xcassets */,
 				DD4D94A628A8771D0082D5C4 /* Preview Content */,
+				D328137D28B1118C0026ED54 /* Const.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -191,6 +194,7 @@
 				DD4D94A128A8771C0082D5C4 /* MapApp.swift in Sources */,
 				DD3B780628A9045600F272F7 /* ViewModel.swift in Sources */,
 				DD030F8C28AF45AE0058029B /* City.swift in Sources */,
+				D328137E28B1118C0026ED54 /* Const.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
